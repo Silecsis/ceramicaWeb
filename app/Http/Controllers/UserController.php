@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Production;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ProductionController extends Controller
+class UserController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -41,10 +41,10 @@ class ProductionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Production  $production
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function show(Production $production)
+    public function show(Sale $sale)
     {
         //
     }
@@ -52,10 +52,10 @@ class ProductionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Production  $production
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function edit(Production $production)
+    public function edit(Sale $sale)
     {
         //
     }
@@ -64,10 +64,10 @@ class ProductionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Production  $production
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Production $production)
+    public function update(Request $request, Sale $sale)
     {
         //
     }
@@ -75,10 +75,10 @@ class ProductionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Production  $production
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Production $production)
+    public function destroy(Sale $sale)
     {
         //
     }
