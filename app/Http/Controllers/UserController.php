@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(5);
 
         if(!$users){
             $array=[
@@ -114,25 +114,23 @@ class UserController extends Controller
                 'message' => 'Usuario no encontrado'
             ];
 
-         return view('/layouts/error',$array);
+         return view('/extras/error',$array);
 
+        }else{
+            $email=$user->email;
+            if ($user->delete()) { 
+
+
+                return redirect()->route('users')->with(['status' => 'El usuario '.$email.' ha sido eliminado correctamente']);
+
+            } else {
+                $array=[
+                    'window'=>'Usuario',
+                    'message' => 'El usuario no puede ser eliminado'
+                ];
+
+                return view('/extras/error',$array);
+            }
         }
- 
-        if ($user->delete()) {
-            $array=[
-                'success' => true
-            ];
-
-        return redirect("/users",302,$array);  
-
-        } else {
-            $error=[
-                'window'=>'Usuario',
-                'message' => 'El usuario no puede ser eliminado'
-            ];
-        }
-
-        return view('/layouts/error',$error);
-        
     }
 }

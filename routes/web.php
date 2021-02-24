@@ -25,12 +25,13 @@ Route::get('/dashboard', function () {
 Route::get('/users', [UserController::class,'index']
 )->middleware(['auth'])->name('users');
 
+
 Route::get('/destroy/{id}', [UserController::class,'destroy']
 )->middleware(['auth'])->name('destroy');
 
 
 Route::get('/error', function () {
-    return view('error');
+    return view('/extras/error');
 })->middleware(['auth'])->name('error');
 
 
