@@ -7,15 +7,41 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+
+    /**
+    * Crea una nueva instancia del controlador
+    */
+    public function __construct()
+    {
+        //Garantiza que los métodos del controlador sean con usuario autenticado. Esto se puede hacer también en la ruta
+        $this->middleware('auth');   
+    }
+
      /**
-     * Display a listing of the resource.
+     * Manda a la vista y todos los usuarios de la base de datos
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        if(!$users){
+            $array=[
+                'success' => false
+            ];
+        }else{
+            $array=[
+                'success' => true,
+                'users'=>$users
+            ];
+        }
+
+        
+        return view('/users/users',$array);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,10 +67,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function show(Sale $sale)
+    public function show(User $User)
     {
         //
     }
@@ -52,10 +78,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sale $sale)
+    public function edit(User $User)
     {
         //
     }
@@ -64,10 +90,10 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, User $User)
     {
         //
     }
@@ -75,11 +101,38 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Sale  $sale
+     * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sale $sale)
+    public function destroy($id)
     {
-        //
+        $user = User::find($id);
+ 
+        if (!$user) {
+            $array=[
+                'window'=>'Usuario',
+                'message' => 'Usuario no encontrado'
+            ];
+
+         return view('/layouts/error',$array);
+
+        }
+ 
+        if ($user->delete()) {
+            $array=[
+                'success' => true
+            ];
+
+        return redirect("/users",302,$array);  
+
+        } else {
+            $error=[
+                'window'=>'Usuario',
+                'message' => 'El usuario no puede ser eliminado'
+            ];
+        }
+
+        return view('/layouts/error',$error);
+        
     }
 }

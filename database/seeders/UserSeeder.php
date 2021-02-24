@@ -43,6 +43,28 @@ class UserSeeder extends Seeder
         'type'=>'user',
         'nick'=>'garcianick',
         'remember_token'=>'rememberGarcia']);
+
+        //5 Usuarios más
+        for($i=1;$i<=5;$i++){
+            DB::table('users')->insert(['name'=>'name'.$i,
+            'email'=>'gmail@gmail.com'.$i,
+            'email_verified_at'=>'1991/02/02',
+            'password'=>Hash::make("MJ"),
+            'type'=>'user',
+            'nick'=>'nick'.$i,
+            'remember_token'=>'remember'.$i]);
+        }
+
+        //5 admins más
+        for($i=6;$i<=10;$i++){
+            DB::table('users')->insert(['name'=>'name'.$i,
+            'email'=>'gmail@gmail.com'.$i,
+            'email_verified_at'=>'1991/02/02',
+            'password'=>Hash::make("MJ"),
+            'type'=>'admin',
+            'nick'=>'nick'.$i,
+            'remember_token'=>'remember'.$i]);
+        }
         
     }
 }

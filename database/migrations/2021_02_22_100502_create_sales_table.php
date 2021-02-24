@@ -16,8 +16,8 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->foreignId('piece_id')->constrained();//Foreign
-            $table->foreignId('user_id')->constrained();//Foreign
+            $table->foreignId('piece_id')->constrained()->onDelete('cascade')->onUpdate('cascade');//Foreign
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');//Foreign
             $table->decimal('price',$precision=8,$scale=2);
             $table->timestamps();
         });

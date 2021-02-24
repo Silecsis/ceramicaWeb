@@ -12,14 +12,20 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'pottery': '#e4c192',
+            },
         },
     },
+
+    //'#e4c192'
 
     variants: {
         extend: {
             opacity: ['disabled'],
         },
     },
+    
 
     plugins: [require('@tailwindcss/forms')],
 };

@@ -21,8 +21,8 @@ class CreateMaterialPieceTable extends Migration
             $table->timestamps();
 
             //Foreign:
-            $table->foreign('piece_id')->references('id')->on('pieces');//Foreign
-            $table->foreign('material_id')->references('id')->on('materials');//Foreign
+            $table->foreign('piece_id')->references('id')->on('pieces')->onDelete('cascade')->onUpdate('cascade');//Foreign
+            $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade')->onUpdate('cascade');//Foreign
         });
     }
 

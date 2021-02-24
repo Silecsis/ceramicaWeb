@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-gray-100 border-b border-gray-300">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -6,14 +6,38 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                        <x-application-logo-small class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <!--HOME-->
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="font-bold">
+                        {{ __('Home') }}
+                    </x-nav-link>
+
+                    <!--SOLO SI ES ADMIN-->
+                    @if (Auth::user()->type == 'admin')
+                        <!--Usuarios-->
+                        <x-nav-link  :href="route('users')" :active="request()->routeIs('users')" class="font-bold" >
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    @endif
+
+                    <!--Materiales-->
+                    <x-nav-link class="font-bold">
+                        {{ __('Materiales') }}
+                    </x-nav-link>
+
+                    <!--Piezas-->
+                    <x-nav-link class="font-bold">
+                        {{ __('Piezas') }}
+                    </x-nav-link>
+
+                    <!--Ventas-->
+                    <x-nav-link class="font-bold">
+                        {{ __('Ventas') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -41,7 +65,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log out') }}
+                                {{ __('Salir') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -63,9 +87,33 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+
+             <!-- Navigation Links -->
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Home') }}
             </x-responsive-nav-link>
+            <!--SOLO SI ES ADMIN-->
+                @if (Auth::user()->type == 'admin')
+                    <!--Usuarios-->
+                    <x-responsive-nav-link :href="route('users')" :active="request()->routeIs('users')" >
+                        {{ __('Usuarios') }}
+                    </x-responsive-nav-link>
+                @endif
+
+            <!--Materiales-->
+                <x-responsive-nav-link >
+                    {{ __('Materiales') }}
+                </x-responsive-nav-link>
+
+                <!--Piezas-->
+                <x-responsive-nav-link >
+                    {{ __('Piezas') }}
+                </x-responsive-nav-link>
+
+                <!--Ventas-->
+                <x-responsive-nav-link >
+                    {{ __('Ventas') }}
+                </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -91,7 +139,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log out') }}
+                        {{ __('Salir') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

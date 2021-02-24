@@ -37,5 +37,13 @@ class PieceSeeder extends Seeder
         'description'=>'Figura mariposa',
         'sold'=>false,
         'total_materials'=>3]);
+
+        for($i=6;$i<=10;$i++){
+            DB::table('pieces')->insert(['name'=>'name'.$i,
+            'user_id'=>$i,
+            'description'=>'description'.$i,
+            'sold'=>false,
+            'total_materials'=>1]);
+        }
     }
 }

@@ -37,5 +37,12 @@ class MaterialSeeder extends Seeder
         'type_material'=>'arcilla',
         'temperature'=>'1200',
         'toxic'=>false]);
+
+        for($i=5;$i<=10;$i++){
+            DB::table('materials')->insert(['name'=>'name'.$i,
+            'type_material'=>'type_material'.$i,
+            'temperature'=>'1200',
+            'toxic'=>false]);
+        }
     }
 }
