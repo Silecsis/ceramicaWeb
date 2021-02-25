@@ -10,16 +10,37 @@
 
             <x-message-status-success class="mb-4" :status="session('status')" :background="session('background')" :textcolor="session('textcolor')" />
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg  border-2 border-gray-400">
+            <nav class="navbar navbar-light py-6"> 
+               <div class="bg-white py-4 px-2 rounded border-2 border-gray-300">
+                    <div class="flex bg-blue-400 rounded pt-4">
+                        <h4 class="pb-4  m-auto text-white font-bold">Cuadro de búsqueda</h4>
+                    </div>
+                    <form class="form-inline pt-4" method="GET" action="{{ route('users')}}" >
+
+                        <input name="buscaNombre" class="form-control mr-sm-2 rounded bg-gray-200 w-40" type="search" placeholder="Por nombre" aria-label="Search">
+                        <input name="buscaEmail" class="form-control ml-2 mr-sm-2 rounded bg-gray-200" type="search" placeholder="Por email" aria-label="Search">
+                        <input name="buscaNick" class="form-control  ml-2 mr-sm-2 rounded bg-gray-200 w-40" type="search" placeholder="Por nick" aria-label="Search">
+                        <input name="buscaFechaLogin" class="form-control ml-2 mr-sm-2 rounded bg-gray-200" type="date" placeholder="Por fecha de creación" aria-label="Search">
+
+                        <label for="tipo" class="ml-4">Tipo de usuario:</label>
+                            <select name="buscaTipo"  class="form-control  mr-sm-2 rounded bg-gray-200">
+                                <option value="0" >Todos</option>
+                                <option value="admin">Administrador</option>
+                                <option value="user">Socio</option>
+                            </select>
+                        <button class="btn btn-outline-success bg-blue-200 border-2  border-gray-400 rounded p-2 float-right" type="submit">Buscar</button>
+                    </form>
+               </div>  
+            </nav>
+
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg  border-2 border-gray-400 p-4">
                     
-                <table class="overflow-x-auto overflow-y-auto w-full bg-white divide-y divide-gray-200">
-                    <thead class="bg-blue-200">
+                <table class="overflow-x-auto overflow-y-auto w-full bg-white divide-y divide-gray-200 mt-4">
+                    <thead class="bg-blue-300">
                         <tr class="divide-x">
-                            <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">ID</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Nombre</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Email</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Contraseña</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Rol</th>
+                            <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Tipo</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Nick</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Imagen</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Fecha creación</th>
@@ -30,10 +51,8 @@
                     @if($success)
                         @foreach($users as $user)     
                             <tr class="text-center">
-                                <td class="py-3">{{$user->id}}</td>
                                 <td class="py-3">{{$user->name}}</td>
                                 <td class="py-3">{{$user->email}}</td>
-                                <td class="py-3">{{$user->password}}</td>
                                 <td class="py-3">{{$user->type}}</td>
                                 <td class="py-3">{{$user->nick}}</td>
                                 <td class="py-3">{{$user->img}}</td>
@@ -56,7 +75,7 @@
                         @endforeach 
                     @else    
                         <tr class="text-center">
-                            <td colspan="9" class="py-3 font-bold text-red-600 text-lg">Se ha producido un error al listar a los usuarios</td>
+                            <td colspan="7" class="py-3 font-bold text-red-600 text-lg">{{ $message }}</td>
                         </tr>
 
                     @endif    

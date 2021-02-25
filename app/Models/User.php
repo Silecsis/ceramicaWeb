@@ -50,4 +50,35 @@ class User extends Authenticatable
     public function sales(){
         return $this->hasMany(Sale::class);
     }
+
+    //Campos de búsqueda:
+    public function scopeNombre($query, $nombre) {
+    	if ($nombre) {
+    		return $query->where('name','like',"%$nombre%");
+    	}
+    }
+
+    public function scopeEmail($query, $email) {
+    	if ($email) {
+    		return $query->where('email','like',"%$email%");
+    	}
+    }
+
+    public function scopeNick($query, $nick) {
+    	if ($nick) {
+    		return $query->where('nick','like',"%$nick%");
+    	}
+    }
+
+    public function scopeFecha($query, $fecha) {
+    	if ($fecha) {
+    		return $query->where('create_at','like',"$fecha");
+    	}
+    }
+
+    public function scopeTipo($query, $tipo) {
+    	if ($tipo && $tipo!=0) {
+    		return $query->where('type','=',"$tipo");
+    	}
+    }
 }

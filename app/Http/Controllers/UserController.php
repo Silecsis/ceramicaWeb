@@ -23,23 +23,53 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(5);
+        if($request){
+            $nombre= $request->get('buscaNombre');
 
-        if(!$users){
-            $array=[
-                'success' => false
-            ];
+            $email= $request->get('buscaEmail');
+
+            $nick= $request->get('buscaNick');
+
+            $fecha= $request->get('buscaFechaLogin');
+
+            $tipo= $request->get('buscaTipo');
+
+            $users = User::nombre($nombre)->email($email)->nick($nick)->fecha($fecha)->tipo($tipo)->paginate(5);
+
+            if(count($users)==0){
+                $array=[
+                    'success' => false,
+                    'message' => 'No existe usuario con dichos datos en nuestra base de datos'
+                ];
+            }else{
+                $array=[
+                    'success' => true,
+                    'users'=>$users
+                ];
+            }
+
+
+            return view('/users/users',compact('users'),$array);
+
         }else{
-            $array=[
-                'success' => true,
-                'users'=>$users
-            ];
-        }
+            $users = User::paginate(5);
 
-        
-        return view('/users/users',$array);
+            if(!$users){
+                $array=[
+                    'success' => false,
+                    'message' => 'No existe usuario con dichos datos en nuestra base de datos'
+                ];
+            }else{
+                $array=[
+                    'success' => true,
+                    'users'=>$users
+                ];
+            }
+
+            return view('/users/users',$array);
+        }
     }
 
 

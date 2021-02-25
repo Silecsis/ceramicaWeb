@@ -19,7 +19,7 @@ class Material extends Model
 
     //La relacion de muchos
     public function pieces() {
-        return $this->belongsToMany(Piece::Class, "material_piece","material_id","piece_id");
+        return $this->belongsToMany(Piece::class, "material_piece","material_id","piece_id");
     }
 
     
