@@ -17,7 +17,7 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-blue-100 ">
+        <div class="min-h-screen bg-blue-100 min-w-min">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

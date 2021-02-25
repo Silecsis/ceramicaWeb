@@ -32,12 +32,12 @@
 
                     <!--Piezas-->
                     <x-nav-link class="font-bold">
-                        {{ __('Piezas') }}
+                        {{ __('Mis piezas') }}
                     </x-nav-link>
 
                     <!--Ventas-->
                     <x-nav-link class="font-bold">
-                        {{ __('Ventas') }}
+                        {{ __('Mis ventas') }}
                     </x-nav-link>
                 </div>
             </div>

@@ -22,12 +22,20 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/users', [UserController::class,'index']
+Route::get('/users', [UserController::class,'listar']
 )->middleware(['auth'])->name('users');
 
+Route::get('/edit.admin', [UserController::class,'showAdmin']
+)->middleware(['auth'])->name('edit.admin');
 
-Route::get('/destroy/{id}', [UserController::class,'destroy']
-)->middleware(['auth'])->name('destroy');
+Route::get('user/avatar/{filename}', [UserController::class,'getImage']
+)->middleware(['auth'])->name('user.avatar');
+
+Route::get('/destroy.admin', [UserController::class,'destroyAdmin']
+)->middleware(['auth'])->name('destroy.admin');
+
+Route::post('/update.admin', [UserController::class,'updateAdmin']
+)->middleware(['auth'])->name('update.admin');
 
 
 Route::get('/error', function () {
