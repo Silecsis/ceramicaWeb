@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MaterialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+//--------MODELO USUARIOS----------------
 
 Route::get('/users', [UserController::class,'listar']
 )->middleware(['auth'])->name('users');
@@ -50,7 +53,27 @@ Route::post('/update.profile', [UserController::class,'update']
 Route::post('/create.admin', [UserController::class,'createAdmin']
 )->middleware(['auth'])->name('create.admin');
 
+//--------MODELO MATERIALES----------------
+Route::get('/materials', [MaterialController::class,'listar']
+)->middleware(['auth'])->name('materials');
 
+Route::get('/new.material', function () {
+    return view('/materials/new-material');
+})->middleware(['auth'])->name('new.material');
+
+Route::post('/create.material', [MaterialController::class,'create']
+)->middleware(['auth'])->name('create.material');
+
+Route::get('/edit.material', [MaterialController::class,'show']
+)->middleware(['auth'])->name('edit.material');
+
+Route::post('/update.material', [MaterialController::class,'update']
+)->middleware(['auth'])->name('update.material');
+
+Route::get('/destroy.material', [MaterialController::class,'destroy']
+)->middleware(['auth'])->name('destroy.material');
+
+//--------------GENERAL------------------
 Route::get('/error', function () {
     return view('/extras/error');
 })->middleware(['auth'])->name('error');

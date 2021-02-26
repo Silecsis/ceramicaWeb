@@ -26,7 +26,7 @@
                     @endif
 
                     <!--Materiales-->
-                    <x-nav-link class="font-bold">
+                    <x-nav-link :href="route('materials',['pagination'=>4])" :active="request()->routeIs('materials')" class="font-bold">
                         {{ __('Materiales') }}
                     </x-nav-link>
 

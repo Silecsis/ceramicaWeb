@@ -40,7 +40,6 @@ class UserController extends Controller
         if($request->get('pagination')){
             $page=$request->get('pagination');
             $arr['pagination']=$request->get('pagination');
-            Config::set('constants.pagination',$page);
         }else{
             $page=Config::get('constants.pagination');
             $arr['pagination']= $page; 
