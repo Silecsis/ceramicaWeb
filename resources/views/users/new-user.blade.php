@@ -69,7 +69,7 @@
                     <!-- Imagen Nueva-->
                     <div class="mt-4">
                         <x-label for="image" :value="__('Cargar imagen nueva: ')" class="font-bold"/>
-                        <input id="image" class="block mt-1 w-full" type="file" name="image" required />
+                        <input id="image" class="block mt-1 w-full" type="file" name="image"/>
                     </div>
                      <!-- Boton-->
                      <div class="mt-4">

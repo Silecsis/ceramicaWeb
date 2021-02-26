@@ -72,7 +72,7 @@ class User extends Authenticatable
 
     public function scopeFecha($query, $fecha) {
     	if ($fecha) {
-    		return $query->where('create_at','like',"$fecha");
+    		return $query->whereDate('created_at','=',"$fecha");
     	}
     }
 

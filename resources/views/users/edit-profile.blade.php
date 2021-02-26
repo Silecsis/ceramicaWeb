@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Usuarios -> Editar usuario de nombre '<b class="text-blue-600">{{$user->name}}</b>'
+            Usuarios -> Editar mi perfil
         </h2>
     </x-slot>
 
@@ -13,7 +13,7 @@
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                <form method="POST" action="{{ route('update.admin',['id'=>$user->id]) }}" enctype="multipart/form-data" >
+                <form method="POST" action="{{ route('update.profile',['id'=>$user->id]) }}" enctype="multipart/form-data" >
                     @csrf
 
                     <!-- Name -->
@@ -30,14 +30,23 @@
                         <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$user->email" required />
                     </div>
 
-                     <!-- Type -->
+                    <!-- Password -->
+                    <div class="mt-4">
+                         <x-label for="password" class="font-bold" :value="__('Contraseña: ')" />
+            
+                         <x-input id="password" class="block mt-1 w-full"
+                                         type="password"
+                                         name="password"/>
+                     </div>
+            
+                     <!-- Confirm Password -->
                      <div class="mt-4">
-                        <x-label for="type" :value="__('Tipo de usuario')" class="font-bold"/>
-                         <select name="type"  class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                             <option value="admin" @if($user->type=="admin") selected @endif)>Administrador</option>
-                             <option value="user" @if($user->type=="user") selected @endif)>Socio</option>
-                         </select>
-                    </div>
+                         <x-label for="password_confirmation" class="font-bold" :value="__('Confirmación de la contraseña: ')" />
+            
+                         <x-input id="password_confirmation" class="block mt-1 w-full"
+                                         type="password"
+                                         name="password_confirmation"/>
+                     </div>
 
                     <!-- Nick -->
                     <div class="mt-4">
@@ -45,6 +54,8 @@
 
                         <x-input id="nick" class="block mt-1 w-full" type="text" name="nick" :value="$user->nick" required />
                     </div>
+
+                    <x-input id="type" hidden type="text" name="type" :value="$user->type"/>
 
                     <!-- Imagen Actual-->
                     <div class="mt-4">
@@ -62,17 +73,13 @@
                     <div class="mt-4">
                         <x-label for="image" :value="__('Cargar imagen nueva: ')" class="font-bold"/>
                         <input id="image" class="block mt-1 w-full" type="file" name="image"/>
+
+                           
                     </div>
                      <!-- Boton-->
                      <div class="mt-4">
-                         <a href="{{ route('users',['pagination'=>4]) }}"  
-                            class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150
-                                    ml-4 flex float-left text-white font-bold bg-blue-400 p-4 rounded p-1.5">
-                                Volver a "Usuarios"
-                        </a>
-
                         <x-button class="ml-4 flex float-right text-white font-bold bg-indigo-500 p-4 rounded p-1.5">
-                             {{ __('Editar') }}
+                             {{ __('Editar mi perfil') }}
                          </x-button>
                     </div>
                    

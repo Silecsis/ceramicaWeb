@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         'password'=>Hash::make("MJ"),
         'type'=>'user',
         'nick'=>'mjnick',
-        'img'=>'dada',
+        'img'=>'1614332898final.png',
         'remember_token'=>'rememberMJ',
         'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
         'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         'password'=>Hash::make("MJ"),
         'type'=>'admin',
         'nick'=>'camponnick',
-        'img'=>'papa',
+        'img'=>'1614335943final.png',
         'remember_token'=>'rememberCampon',
         'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
         'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
@@ -47,6 +47,7 @@ class UserSeeder extends Seeder
         'password'=>Hash::make("MJ"),
         'type'=>'user',
         'nick'=>'garcianick',
+        'img'=>'1614336156IMG_20140122_183237.jpg',
         'remember_token'=>'rememberGarcia',
         'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
         'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);

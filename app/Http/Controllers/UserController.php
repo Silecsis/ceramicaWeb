@@ -16,8 +16,6 @@ use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
-
-
     /**
     * Crea una nueva instancia del controlador
     */
@@ -31,6 +29,7 @@ class UserController extends Controller
     //------------------FUNCIONES QUE REALIZA EL ADMIN--------------------//
 
      /**
+     * Solo podrá acceder el type admin
      * Manda a la vista y todos los usuarios de la base de datos.
      * También manda a la vista mediante filtrado
      *
@@ -43,8 +42,8 @@ class UserController extends Controller
             $arr['pagination']=$request->get('pagination');
             Config::set('constants.pagination',$page);
         }else{
-            $page=Config::get('constants.pagination'); 
-            var_dump($page);
+            $page=Config::get('constants.pagination');
+            $arr['pagination']= $page; 
         }
         
         //Control de que no pueda acceder ningun socio
@@ -65,8 +64,9 @@ class UserController extends Controller
                 $tipo= $request->get('buscaTipo');
 
                 //El usuario con los filtros:
+                //$users = User::nombre($nombre)->email($email)->nick($nick)->fecha($fecha)->tipo($tipo)->paginate($page);
                 $users = User::nombre($nombre)->email($email)->nick($nick)->fecha($fecha)->tipo($tipo)->paginate($page);
-
+                
                 //Hacemos control
                 if(count($users)==0){
                     $array=[
@@ -116,7 +116,8 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Solo podrá acceder el type admin.
+     * Manda a la vista de edición de usuario cargando sus datos en los campos.
      *
      * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
@@ -164,7 +165,8 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Solo podrá acceder el type admin.
+     * Actualiza el usuario desde la lista y volverá a la lista
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $User
@@ -224,8 +226,6 @@ class UserController extends Controller
                 $user->type = $request->type;
                 $user->nick = $request->nick;
 
-                
-
                 //Si probamos a actualizar y funciona, lo redirigimos a la vista principal con un mensaje.
                 if ($user->save()) { 
                     $array=[
@@ -254,7 +254,8 @@ class UserController extends Controller
     }
 
     /**
-     *Elimina aun usuario de la tabla de datos y vuelve a la vista principal.
+     * Solo podrá acceder el type admin.
+     *Elimina aun usuario de la tabla de datos y vuelve a la lista.
      *
      * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
@@ -315,7 +316,8 @@ class UserController extends Controller
     }
 
      /**
-     * Show the form for creating a new resource.
+     * Solo podrá acceder el type admin.
+     * Crea un nuevo usuario.
      *
      * @return \Illuminate\Http\Response
      */
@@ -378,46 +380,50 @@ class UserController extends Controller
         }
     }
 
-
-
-    //------------------FUNCIONES QUE REALIZA EL ADMIN--------------------//
+    //------------------//FUNCIONES QUE REALIZA EL ADMIN--------------------//
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    
-
-    /**
-     * Show the form for editing the specified resource.
+     * Manda a la vista de actualizar el perfil logueado con los datos
+     * del usuario cargados en los campos.
      *
      * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $User)
+    public function show(Request $request)
     {
-        //
+        $id=$request->get('id');
+        $user = User::find($id);
+
+        //Sino existe, mandamos a página de error.
+        if (!$user) {
+            $array=[
+                'window'=>'Usuario -> Edición de mi perfil',
+                'message' => 'Usuario no encontrado'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+            //Si existe, controlamos que se este editando a sí mismo
+            if(Auth::user()->id == $user->id){
+                //Si existe, mandamos a la página de edición de usuario con los datos del usuario.
+                $array=[
+                    "user"=>$user
+                ];
+                return view('/users/edit-profile',$array);
+                
+            }else{
+                $array=[
+                    'window'=>'Home',
+                    'message' => 'No puedes editar un perfil que no sea el tuyo.'
+                ];
+    
+                return view('/extras/error',$array);
+            }
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el perfil del usuario que está logado
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $User
@@ -425,13 +431,84 @@ class UserController extends Controller
      */
     public function update(Request $request, User $User)
     {
-        //
+        $id=$request->get('id');
+        $user = User::find($id);
+
+        //Sino existe, mandamos a página de error.
+        if (!$user) {
+            $array=[
+                'window'=>'Usuario -> Edición de mi perfil',
+                'message' => 'Usuario no encontrado'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+            //Si existe, controlamos que se este editando a sí mismo
+            if(Auth::user()->id == $user->id){
+                //Luego validamos.   
+                $request->validate([
+                    'name' => 'required|string|max:255|min:6',
+                    'email' => 'required|string|email|max:255|min:6|unique:users,email,' . $user->id,
+                    'password' => 'required|string|confirmed|min:8',
+                    'nick' => 'required|string|max:255|min:4'
+                 ]); 
+
+                //Subir la imagen
+                $image= $request->file('image'); 
+                // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
+                // Para ello utilizaremos un objeto storage de Laravel
+                if($image){
+                    // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+                    $image_name =  time() . $image->getClientOriginalName();
+                    // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+                    // donde se almacenó y guardamos la imagen recibida con el nombre generado
+                    Storage::disk('users')->put($image_name, File::get($image));
+                    $user->img = $image_name;   
+                } 
+                
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->nick = $request->nick;
+                $user->password = Hash::make($request->password);
+                $user->email_verified_at = Carbon::now()->format('Y-m-d H:i:s');
+                $user->remember_token = 'remember'.$user->nick;
+                $user->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+
+                //Si probamos a actualizar y funciona, lo redirigimos a la vista de edicion de mi perfil con un mensaje.
+                if ($user->save()) { 
+                    $array=[
+                        'id'=>$user->id
+                    ];
+                    return redirect()->route('edit.profile', $array)->with(['status' => 'Se ha actualizado el perfil correctamente']);
+
+                } else {
+                //Sino funciona el guardar, se le manda a la vista de error con el mensaje.
+                    $array=[
+                        'window'=>'Usuario -> Edición de mi perfil',
+                        'message' => 'Ha habido un problema en el guardado de edición'
+                    ];
+
+                    return view('/extras/error',$array);
+                }
+            }else{
+                $array=[
+                    'window'=>'Home',
+                    'message' => 'No puedes editar un perfil que no sea el tuyo.'
+                ];
+    
+                return view('/extras/error',$array);
+            }
+        }
     }
-
     
+    //------------------PARA IMAGENES--------------------//
 
-    
-
+    /**
+     * Actualiza la imagen
+     *
+     * @param Request $request
+     * @return void
+     */
     public function updateImage(Request $request)
     {
       $user = User::find(Auth::user()->id);

@@ -54,14 +54,8 @@
                      <x-slot name="content">
                          <form method="GET">
                              <x-dropdown-link :href="route('users',['pagination'=>4])">{{ __('Paginación de 4') }}</x-dropdown-link>
-                         </form>
-                         <form method="GET">
                              <x-dropdown-link :href="route('users',['pagination'=>6])">{{ __('Paginación de 6') }}</x-dropdown-link>
-                         </form>
-                         <form method="GET">
                              <x-dropdown-link :href="route('users',['pagination'=>8])">{{ __('Paginación de 8') }}</x-dropdown-link>
-                         </form>
-                         <form method="GET">
                              <x-dropdown-link :href="route('users',['pagination'=>10])">{{ __('Paginación de 10') }}</x-dropdown-link>
                          </form>
                      </x-slot>
@@ -90,8 +84,14 @@
                                 <td class="py-3">{{$user->email}}</td>
                                 <td class="py-3">{{$user->type}}</td>
                                 <td class="py-3">{{$user->nick}}</td>
-                                <td class="py-3">{{$user->img}}</td>
-                                <td class="py-3">{{$user->create_at}}</td>
+                                <td class="py-3 flex justify-center"> 
+                                @if(is_null($user->img))
+                                    <img alt="imagen defecto" width="48" height="48" class="ml-1 rounded-full w-10 h-10 mr-4 shadow-lg" src="{{ route('user.avatar', 'default-img.png')}}"
+                                @else 
+                                    <img alt="imagen user" width="48" height="48" class="ml-1 rounded-full w-10 h-10 mr-4 shadow-lg" src="{{ route('user.avatar', ['filename'=> $user->img])}}">
+                                @endif
+                                </td>
+                                <td class="py-3">{{substr($user->created_at,0,10)}}</td>
                                 <td class="py-3">
                                 <div class="flex justify-center space-x-1">
                                     
@@ -120,7 +120,7 @@
                     @endif    
                        
                     </tbody>
-                    {{$users->links()}}
+                    {{$users->appends(request()->all())->links()}}
                 </table> 
             </div>
         </div>

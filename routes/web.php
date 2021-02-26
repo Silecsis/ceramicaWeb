@@ -28,6 +28,9 @@ Route::get('/users', [UserController::class,'listar']
 Route::get('/edit.admin', [UserController::class,'showAdmin']
 )->middleware(['auth'])->name('edit.admin');
 
+Route::get('/edit.profile', [UserController::class,'show']
+)->middleware(['auth'])->name('edit.profile');
+
 Route::get('/new.user', function () {
     return view('/users/new-user');
 })->middleware(['auth'])->name('new.user');
@@ -40,6 +43,9 @@ Route::get('/destroy.admin', [UserController::class,'destroyAdmin']
 
 Route::post('/update.admin', [UserController::class,'updateAdmin']
 )->middleware(['auth'])->name('update.admin');
+
+Route::post('/update.profile', [UserController::class,'update']
+)->middleware(['auth'])->name('update.profile');
 
 Route::post('/create.admin', [UserController::class,'createAdmin']
 )->middleware(['auth'])->name('create.admin');
