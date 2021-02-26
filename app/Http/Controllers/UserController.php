@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Carbon;
 
 class UserController extends Controller
 {
@@ -40,7 +41,7 @@ class UserController extends Controller
         if($request->get('pagination')){
             $page=$request->get('pagination');
             $arr['pagination']=$request->get('pagination');
-            //Config::set('pagination',$request->get('pagination'));
+            Config::set('constants.pagination',$page);
         }else{
             $page=Config::get('constants.pagination'); 
             var_dump($page);
@@ -313,6 +314,69 @@ class UserController extends Controller
         
     }
 
+     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createAdmin(Request $request)
+    {
+        //Control de que no pueda acceder ningun socio
+        if(Auth::user()->type == 'admin'){
+    
+            $user = new User();
+
+            $request->validate([
+                'name' => 'required|string|max:255|min:6',
+                'email' => 'required|string|email|max:255|min:6|unique:users,email',
+                'password' => 'required|string|confirmed|min:8',
+                'type' => 'required|string|max:10',
+                'nick' => 'required|string|max:255|min:2'
+             ]); 
+
+            //Subir la imagen
+            $image= $request->file('image'); 
+            // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
+            // Para ello utilizaremos un objeto storage de Laravel
+            if($image){
+                // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+                $image_name =  time() . $image->getClientOriginalName();
+                // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+                // donde se almacenó y guardamos la imagen recibida con el nombre generado
+                Storage::disk('users')->put($image_name, File::get($image));
+                $user->img = $image_name;   
+            } 
+            
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->type = $request->type;
+            $user->nick = $request->nick;
+            $user->password = Hash::make($request->password);
+            $user->email_verified_at = Carbon::now()->format('Y-m-d H:i:s');
+            $user->remember_token = 'remember'.$user->nick;
+
+            //Si probamos a actualizar y funciona, lo redirigimos a la vista principal con un mensaje.
+            if ($user->save()) {
+                return redirect()->route('new.user')->with(['status' => 'El usuario se ha creado con éxito.']);
+
+            } else {
+            //Sino funciona el guardar, se le manda a la vista de error con el mensaje.
+                $array=[
+                    'window'=>'Usuario -> Nuevo usuario -> Creación',
+                    'message' => 'El usuario no se ha podido crear'
+                ];
+
+                return view('/extras/error',$array);
+            }
+        }else{
+            $array=[
+                'window'=>'Home',
+                'message' => 'No tiene permisos de administrador para acceder a dicha URL.'
+            ];
+
+            return view('/extras/error',$array);
+        }
+    }
 
 
 
@@ -369,7 +433,7 @@ class UserController extends Controller
     
 
     public function updateImage(Request $request)
-   {
+    {
       $user = User::find(Auth::user()->id);
       
       $request->validate([

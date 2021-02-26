@@ -34,7 +34,7 @@
             </nav>
 
             
-            <a href="{{ route('register') }}"  class="text-lg text-gray-600 font-bold bg-yellow-300 border-4 border-gray-400 p-4 rounded p-1.5">Nuevo usuario</a>
+            <a href="{{ route('new.user') }}"  class="text-lg text-gray-600 font-bold bg-yellow-300 border-4 border-gray-400 p-4 rounded p-1.5">Nuevo usuario</a>
             <a   class="text-lg text-white font-bold bg-indigo-500 ml-4 p-4 rounded p-1.5">Piezas de cada usuario</a>
             <a   class="text-lg text-white font-bold bg-indigo-500 ml-4 p-4 rounded p-1.5">Ventas de cada usuario</a>
 
