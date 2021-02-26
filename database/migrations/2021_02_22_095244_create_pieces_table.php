@@ -17,6 +17,7 @@ class CreatePiecesTable extends Migration
             $table->id();
             $table->string("name");
             $table->unsignedBigInteger('user_id');
+            $table->string("img")->nullable();;
             $table->string("description");
             $table->boolean('sold');
             $table->integer('total_materials');

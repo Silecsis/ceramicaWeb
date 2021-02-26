@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,9 @@ class UserSeeder extends Seeder
         'type'=>'user',
         'nick'=>'mjnick',
         'img'=>'dada',
-        'remember_token'=>'rememberMJ']);
+        'remember_token'=>'rememberMJ',
+        'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+        'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
 
         //User 2
         DB::table('users')->insert(['name'=>'Campon',
@@ -33,7 +36,9 @@ class UserSeeder extends Seeder
         'type'=>'admin',
         'nick'=>'camponnick',
         'img'=>'papa',
-        'remember_token'=>'rememberCampon']);
+        'remember_token'=>'rememberCampon',
+        'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+        'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
 
         //User 3
         DB::table('users')->insert(['name'=>'garcia',
@@ -42,7 +47,9 @@ class UserSeeder extends Seeder
         'password'=>Hash::make("MJ"),
         'type'=>'user',
         'nick'=>'garcianick',
-        'remember_token'=>'rememberGarcia']);
+        'remember_token'=>'rememberGarcia',
+        'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+        'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
 
         //5 Usuarios más
         for($i=1;$i<=5;$i++){
@@ -52,7 +59,9 @@ class UserSeeder extends Seeder
             'password'=>Hash::make("MJ"),
             'type'=>'user',
             'nick'=>'nick'.$i,
-            'remember_token'=>'remember'.$i]);
+            'remember_token'=>'remember'.$i,
+            'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
         }
 
         //5 admins más
@@ -63,7 +72,9 @@ class UserSeeder extends Seeder
             'password'=>Hash::make("MJ"),
             'type'=>'admin',
             'nick'=>'nick'.$i,
-            'remember_token'=>'remember'.$i]);
+            'remember_token'=>'remember'.$i,
+            'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
         }
         
     }

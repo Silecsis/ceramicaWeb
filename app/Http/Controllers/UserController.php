@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -36,12 +37,13 @@ class UserController extends Controller
      */
     public function listar(Request $request)
     {
-        //Si no le manda la paginación, por defecto será de 4.
-        if(!$request->get('pagination')){
-            $page=4;
-        }else{
+        if($request->get('pagination')){
             $page=$request->get('pagination');
             $arr['pagination']=$request->get('pagination');
+            //Config::set('pagination',$request->get('pagination'));
+        }else{
+            $page=Config::get('constants.pagination'); 
+            var_dump($page);
         }
         
         //Control de que no pueda acceder ningun socio
@@ -212,7 +214,7 @@ class UserController extends Controller
                     $image_name =  time() . $image->getClientOriginalName();
                     // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
                     // donde se almacenó y guardamos la imagen recibida con el nombre generado
-                    Storage::disk('public')->put($image_name, File::get($image));
+                    Storage::disk('users')->put($image_name, File::get($image));
                     $user->img = $image_name;   
                 } 
                 

@@ -20,7 +20,7 @@
                     <!--SOLO SI ES ADMIN-->
                     @if (Auth::user()->type == 'admin')
                         <!--Usuarios-->
-                        <x-nav-link  :href="route('users')" :active="request()->routeIs('users')" class="font-bold" >
+                        <x-nav-link  :href="route('users',['pagination'=>4])" :active="request()->routeIs('users')" class="font-bold" >
                             {{ __('Usuarios') }}
                         </x-nav-link>
                     @endif

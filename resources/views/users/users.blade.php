@@ -15,7 +15,7 @@
                     <div class="flex bg-blue-400 rounded pt-4">
                         <h4 class="pb-4  m-auto text-white font-bold text-lg">Cuadro de búsqueda</h4>
                     </div>
-                    <form class="form-inline pt-4" method="GET" action="{{ route('users')}}" >
+                    <form class="form-inline pt-4" method="GET" action="{{ route('users',['pagination'=>4])}}" >
 
                         <input name="buscaNombre" class="form-control mr-sm-2 rounded bg-gray-200 w-40" type="search" placeholder="Por nombre" aria-label="Search">
                         <input name="buscaEmail" class="form-control ml-2 mr-sm-2 rounded bg-gray-200" type="search" placeholder="Por email" aria-label="Search">
