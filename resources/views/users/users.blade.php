@@ -36,7 +36,7 @@
             
             <a href="{{ route('new.user') }}"  class="text-lg text-gray-600 font-bold bg-yellow-300 border-4 border-gray-400 p-4 rounded p-1.5">Nuevo usuario</a>
             <a   class="text-lg text-white font-bold bg-indigo-500 ml-4 p-4 rounded p-1.5">Piezas de cada usuario</a>
-            <a   class="text-lg text-white font-bold bg-indigo-500 ml-4 p-4 rounded p-1.5">Ventas de cada usuario</a>
+            <a href="{{route('sales',['pagination'=>4])}}" class="text-lg text-white font-bold bg-indigo-500 ml-4 p-4 rounded p-1.5">Ventas de cada usuario</a>
 
             <!--SELECCION DE PAGINACION-->  
             <div class="hidden sm:flex mt-8 mb-1  ">

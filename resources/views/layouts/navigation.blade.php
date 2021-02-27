@@ -36,7 +36,7 @@
                     </x-nav-link>
 
                     <!--Ventas-->
-                    <x-nav-link class="font-bold">
+                    <x-nav-link :href="route('my.sales',['pagination'=>4])" :active="request()->routeIs('my.sales')" class="font-bold">
                         {{ __('Mis ventas') }}
                     </x-nav-link>
                 </div>
@@ -101,30 +101,30 @@
         <div class="pt-2 pb-3 space-y-1">
 
              <!-- Navigation Links -->
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="font-bold">
                 {{ __('Home') }}
             </x-responsive-nav-link>
             <!--SOLO SI ES ADMIN-->
                 @if (Auth::user()->type == 'admin')
                     <!--Usuarios-->
-                    <x-responsive-nav-link :href="route('users')" :active="request()->routeIs('users')" >
+                    <x-responsive-nav-link :href="route('users',['pagination'=>4])" :active="request()->routeIs('users')" class="font-bold" >
                         {{ __('Usuarios') }}
                     </x-responsive-nav-link>
                 @endif
 
             <!--Materiales-->
-                <x-responsive-nav-link >
+                <x-responsive-nav-link :href="route('materials',['pagination'=>4])" :active="request()->routeIs('materials')" class="font-bold">
                     {{ __('Materiales') }}
                 </x-responsive-nav-link>
 
                 <!--Piezas-->
                 <x-responsive-nav-link >
-                    {{ __('Piezas') }}
+                    {{ __('Mis Piezas') }}
                 </x-responsive-nav-link>
 
                 <!--Ventas-->
-                <x-responsive-nav-link >
-                    {{ __('Ventas') }}
+                <x-responsive-nav-link :href="route('my.sales',['pagination'=>4])" :active="request()->routeIs('my.sales')" class="font-bold">
+                    {{ __('Mis Ventas') }}
                 </x-responsive-nav-link>
         </div>
 
@@ -178,13 +178,12 @@
                                 <x-dropdown-link :href="route('logout')"
                                         onclick="event.preventDefault();
                                                     this.closest('form').submit();">
-                                    {{ __('Afu') }}
+                                    {{ __('Salir') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                         
                     </x-dropdown>
-                    {{-- Inclusión del avatar en el menú superior --}}
                 </div>
             </div>
         </div>

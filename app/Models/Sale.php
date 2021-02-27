@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EloquentBuilder;
 
 class Sale extends Model
 {
@@ -17,7 +18,7 @@ class Sale extends Model
     ];
 
     public function users(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->hasOne(User::class,'user_id');
     }
 
     public function pieces(){
@@ -25,4 +26,35 @@ class Sale extends Model
     }
 
     use HasFactory;
+
+    //Campos de búsqueda:
+    public function scopeNombre($query, $nombre) {
+    	if ($nombre) {
+    		return $query->where('name','like',"%$nombre%");
+    	}
+    }
+
+    public function scopeUserId($query, $userId) {
+    	if ($userId) {
+    		return $query->where('user_id','=',$userId);
+    	}
+    }
+
+    public function scopePieceId($query, $pieceId) {
+    	if ($pieceId) {
+    		return $query->where('piece_id','=',$pieceId);
+    	}
+    }
+
+    public function scopePrecio($query, $precio) {
+    	if ($precio) {
+    		return $query->where('price','=',$precio);
+    	}
+    }
+
+    public function scopeFecha($query, $fecha) {
+    	if ($fecha) {
+    		return $query->whereDate('created_at','=',"$fecha");
+    	}
+    }
 }

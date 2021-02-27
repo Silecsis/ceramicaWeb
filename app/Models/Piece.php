@@ -31,4 +31,17 @@ class Piece extends Model
     }
 
     use HasFactory;
+
+    //Campos de búsqueda:
+    public function scopeNombre($query, $nombre) {
+    	if ($nombre) {
+    		return $query->where('name','like',"%$nombre%");
+    	}
+    }
+
+    public function scopeNombreVenta($query, $nombreVenta) {
+    	if ($nombreVenta) {
+    		return $query->where('name','=',"$nombreVenta");
+    	}
+    }
 }

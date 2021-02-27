@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SaleSeeder extends Seeder
@@ -18,6 +19,8 @@ class SaleSeeder extends Seeder
         DB::table('sales')->insert(['name'=>'Barata',
         'user_id'=>'2',
         'piece_id'=>'2',
-        'price'=>200]);
+        'price'=>200,
+        'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+        'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s')]);
     }
 }

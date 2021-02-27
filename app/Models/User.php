@@ -81,4 +81,10 @@ class User extends Authenticatable
     		return $query->where('type','=',"$tipo");
     	}
     }
+
+    public function scopeEmailVenta($query, $emailVenta) {
+    	if ($emailVenta) {
+    		return $query->where('email','=',"$emailVenta");
+    	}
+    }
 }

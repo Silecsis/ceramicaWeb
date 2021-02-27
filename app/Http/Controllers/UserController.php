@@ -214,9 +214,17 @@ class UserController extends Controller
                 if($image){
                     // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
                     $image_name =  time() . $image->getClientOriginalName();
+                    $image_delete= $user->img;
+                    
                     // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
                     // donde se almacenó y guardamos la imagen recibida con el nombre generado
                     Storage::disk('users')->put($image_name, File::get($image));
+
+                    //Si no es la imagen por defecto, eliminamos la que tenia antes
+                    if($image_delete != 'default-img.png'){
+                        Storage::disk('users')->delete($image_delete);
+                    }
+
                     $user->img = $image_name;   
                 } 
                 
@@ -288,9 +296,15 @@ class UserController extends Controller
             }else{
                 //Si existe, recogemos el email del ususario.    
                 $email=$user->email;
+                $image_delete= $user->img;
 
                 //Si probamos a eliminar y funciona, lo redirigimos a la vista principal con un mensaje.
                 if ($user->delete()) { 
+                    //Si no es la imagen por defecto, eliminamos la imagen que tenia
+                    if($image_delete != 'default-img.png'){
+                        Storage::disk('users')->delete($image_delete);
+                    }
+
                     return redirect()->route('users')->with(['status' => 'El usuario '.$email.' ha sido eliminado correctamente']);
 
                 } else {
@@ -459,9 +473,16 @@ class UserController extends Controller
                 if($image){
                     // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
                     $image_name =  time() . $image->getClientOriginalName();
+                    $image_delete= $user->img;
+                    
                     // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
                     // donde se almacenó y guardamos la imagen recibida con el nombre generado
                     Storage::disk('users')->put($image_name, File::get($image));
+
+                    //Si no es la imagen por defecto, eliminamos la que tenia antes
+                    if($image_delete != 'default-img.png'){
+                        Storage::disk('users')->delete($image_delete);
+                    }
                     $user->img = $image_name;   
                 } 
                 

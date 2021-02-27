@@ -15,12 +15,11 @@ class CreatePiecesTable extends Migration
     {
         Schema::create('pieces', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string("name")->unique();
             $table->unsignedBigInteger('user_id');
-            $table->string("img")->nullable();;
+            $table->string("img");
             $table->string("description");
             $table->boolean('sold');
-            $table->integer('total_materials');
             $table->timestamps();
 
             //Foreigns:

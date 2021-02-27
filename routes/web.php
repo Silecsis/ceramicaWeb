@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,6 +73,14 @@ Route::post('/update.material', [MaterialController::class,'update']
 
 Route::get('/destroy.material', [MaterialController::class,'destroy']
 )->middleware(['auth'])->name('destroy.material');
+
+
+//-----------MODELO VENTAS----------------
+Route::get('/sales', [SaleController::class,'listar']
+)->middleware(['auth'])->name('sales');
+
+Route::get('/my.sales', [SaleController::class,'listarMisVentas']
+)->middleware(['auth'])->name('my.sales');
 
 //--------------GENERAL------------------
 Route::get('/error', function () {

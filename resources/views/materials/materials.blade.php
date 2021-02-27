@@ -71,7 +71,6 @@
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Temperatura</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Toxicidad</th>
                             <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Fecha creación</th>
-                            <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Material utilizado en...</th>
                             <!--Solo los administradores podrán borrar o editar materiales-->
                             @if(Auth::user()->type == 'admin')
                                 <th class="px-3 py-2 text-xs font-medium text-gray-700 font-bold uppercase">Acciones</th>
@@ -91,7 +90,6 @@
                                     <td class="py-3 bg-pink-200 font-bold">No tóxico</td>
                                 @endif
                                 <td class="py-3">{{substr($material->created_at,0,10)}}</td>
-                                <td class="py-3">{{$material->pieces_count}} piezas</td>
                                
                                 <!--Solo los administradores podrán borrar o editar materiales-->
                                 @if(Auth::user()->type == 'admin')
