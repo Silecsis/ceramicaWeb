@@ -31,7 +31,7 @@
                     </x-nav-link>
 
                     <!--Piezas-->
-                    <x-nav-link class="font-bold">
+                    <x-nav-link :href="route('my.pieces',['pagination'=>4])" :active="request()->routeIs('my.pieces')" class="font-bold">
                         {{ __('Mis piezas') }}
                     </x-nav-link>
 
@@ -118,7 +118,7 @@
                 </x-responsive-nav-link>
 
                 <!--Piezas-->
-                <x-responsive-nav-link >
+                <x-responsive-nav-link :href="route('my.pieces',['pagination'=>4])" :active="request()->routeIs('my.pieces')" class="font-bold">
                     {{ __('Mis Piezas') }}
                 </x-responsive-nav-link>
 

@@ -39,9 +39,31 @@ class Piece extends Model
     	}
     }
 
-    public function scopeNombreVenta($query, $nombreVenta) {
-    	if ($nombreVenta) {
-    		return $query->where('name','=',"$nombreVenta");
+    public function scopeUserId($query, $userId) {
+    	if ($userId) {
+    		return $query->where('user_id','=',$userId);
     	}
+    }
+
+    public function scopeFecha($query, $fecha) {
+    	if ($fecha) {
+    		return $query->whereDate('created_at','=',"$fecha");
+    	}
+    }
+
+    public function scopeToxico($query, $toxico) {
+    	if ($toxico=='no') {
+    		return $query->where('toxic','=',0);
+    	}else if($toxico=='si'){
+            return $query->where('toxic','=',1);
+        }
+    }
+
+    public function scopeVendido($query, $vendido) {
+        if ($vendido=='no') {
+    		return $query->where('sold','=',0);
+    	}else if($vendido=='si'){
+            return $query->where('sold','=',1);
+        }
     }
 }

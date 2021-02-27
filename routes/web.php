@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\PieceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,6 +82,27 @@ Route::get('/sales', [SaleController::class,'listar']
 
 Route::get('/my.sales', [SaleController::class,'listarMisVentas']
 )->middleware(['auth'])->name('my.sales');
+
+Route::get('/new.sale', [SaleController::class,'create']
+)->middleware(['auth'])->name('new.sale');
+
+
+//-----------MODELO PIEZAS----------------
+Route::get('/pieces', [PieceController::class,'listar']
+)->middleware(['auth'])->name('pieces');
+
+Route::get('/my.pieces', [PieceController::class,'listarMisPiezas']
+)->middleware(['auth'])->name('my.pieces');
+
+Route::get('/my.pieces.sold', [PieceController::class,'sold']
+)->name('my.pieces.sold');
+
+Route::get('/piece.detail', [PieceController::class,'detail']
+)->middleware(['auth'])->name('piece.detail');
+
+
+Route::get('/images/file/{filename}', [PieceController::class,'getImage']
+)->name('image.file');
 
 //--------------GENERAL------------------
 Route::get('/error', function () {

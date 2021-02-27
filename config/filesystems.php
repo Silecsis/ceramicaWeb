@@ -51,9 +51,9 @@ return [
             ],
     
          // Disco que almacenará las imágenes subidas por los usuarios
-         'piecesImg' => [
+         'pieces' => [
              'driver' => 'local',
-             'root' => storage_path('app/piecesImg'),
+             'root' => storage_path('app/pieces'),
              'url' => env('APP_URL') . '/storage',
              'visibility' => 'public',
          ],

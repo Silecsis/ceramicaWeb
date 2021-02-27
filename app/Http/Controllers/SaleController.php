@@ -52,36 +52,10 @@ class SaleController extends Controller
                     'piecesAll' => $piecesAll 
                 ];
             }else{
-                //Buscamos los usuarios y las piezas:
-                foreach ($sales as $sale){
-                    //Buscamos al user
-                    foreach($usersAll as $user){
-                        if($user->id == $sale ->user_id){
-                            //Guardamos los encontrados en un array
-                            $usersSales[]=[
-                                "id"=>$user->id,
-                                "email"=>$user->email
-                            ];
-                        }
-                    };
-
-                    //Buscamos la pieza
-                    foreach($piecesAll as $piece){
-                        if($piece->id == $sale ->piece_id){
-                            //Guardamos los encontrados en un array 
-                            $piecesSales[]=[
-                                "id"=>$piece->id,
-                                "name"=>$piece->name
-                            ];
-                        }
-                    };
-                };
 
                 $array=[
                     'success' => true,
                     'sales'=>$sales,
-                    'usersSales'=>$usersSales,
-                    'piecesSales'=>$piecesSales,
                     'usersAll' => $usersAll,
                     'piecesAll' => $piecesAll
                 ];
@@ -102,36 +76,10 @@ class SaleController extends Controller
                     'piecesAll' => $piecesAll
                 ];
             }else{
-                //Buscamos los usuarios y las piezas:
-                foreach ($sales as $sale){
-                    //Buscamos al user
-                    foreach($usersAll as $user){
-                        if($user->id == $sale ->id){
-                            //Guardamos los encontrados en un array 
-                            $usersSales[]=[
-                                "id"=>$user->id,
-                                "email"=>$user->email
-                            ];
-                        }
-                    };
-
-                    //Buscamos la pieza
-                    foreach($piecesAll as $piece){
-                        if($piece->id == $sale ->id){
-                            //Guardamos los encontrados en un array 
-                            $piecesSales[]=[
-                                "id"=>$piece->id,
-                                "name"=>$piece->name
-                            ];
-                        }
-                    };
-                };
 
                 $array=[
                     'success' => true,
                     'sales'=>$sales,
-                    'usersSales'=>$usersSales,
-                    'piecesSales'=>$piecesSales,
                     'usersAll' => $usersAll,
                     'piecesAll' => $piecesAll
                 ];
@@ -179,25 +127,10 @@ class SaleController extends Controller
                     'piecesAll' => $piecesAll 
                 ];
             }else{
-                //Buscamos los usuarios y las piezas:
-                foreach ($sales as $sale){
-
-                    //Buscamos la pieza
-                    foreach($piecesAll as $piece){
-                        if($piece->id == $sale ->piece_id){
-                            //Guardamos los encontrados en un array 
-                            $piecesSales[]=[
-                                "id"=>$piece->id,
-                                "name"=>$piece->name
-                            ];
-                        }
-                    };
-                };
 
                 $array=[
                     'success' => true,
                     'sales'=>$sales,
-                    'piecesSales'=>$piecesSales,
                     'piecesAll' => $piecesAll
                 ];
             }
@@ -216,24 +149,10 @@ class SaleController extends Controller
                     'piecesAll' => $piecesAll
                 ];
             }else{
-                //Buscamos los usuarios y las piezas:
-                foreach ($sales as $sale){
-                    //Buscamos la pieza
-                    foreach($piecesAll as $piece){
-                        if($piece->id == $sale ->id){
-                            //Guardamos los encontrados en un array 
-                            $piecesSales[]=[
-                                "id"=>$piece->id,
-                                "name"=>$piece->name
-                            ];
-                        }
-                    };
-                };
 
                 $array=[
                     'success' => true,
                     'sales'=>$sales,
-                    'piecesSales'=>$piecesSales,
                     'piecesAll' => $piecesAll
                 ];
             }
@@ -241,17 +160,6 @@ class SaleController extends Controller
             return view('/sales/my.sales',$array);
         }
        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -272,29 +180,6 @@ class SaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Sale  $sale
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Sale $sale)
     {
         //
     }

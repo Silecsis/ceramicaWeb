@@ -77,9 +77,9 @@
                             <tr class="text-center">
                                 <td class="py-3">{{$sale->name}}</td>
                                 <!--Buscamos el nombre de la pieza-->
-                                @foreach($piecesSales as $piece)
-                                    @if($sale->piece_id == $piece['id'])
-                                        <td class="py-3">{{$piece['name']}}</td>
+                                @foreach($piecesAll as $piece)
+                                    @if($sale->piece_id == $piece->id)
+                                        <td class="py-3">{{$piece->name}}</td>
                                     @endif
                                 @endforeach
                                 <td class="py-3">{{$sale->price}} €</td>
