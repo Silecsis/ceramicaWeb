@@ -1,3 +1,9 @@
+<!--Vista de listado de usuarios.
+    Muestra una lista con todos los usuarios.
+    Filtra los usuarios.
+    Pagina los usuarios.
+    Solo pueden acceder los usuarios de tipo admin
+-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

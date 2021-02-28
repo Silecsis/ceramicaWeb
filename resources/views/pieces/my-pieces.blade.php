@@ -70,7 +70,7 @@
                         @foreach($pieces as $piece)     
                             <tr class="text-center"> 
                                 <td class="py-3 flex justify-center"> 
-                                    <img alt="imagen pieza" width="48" height="48" class="ml-1 rounded w-20 h-20 mr-4 shadow-lg" src="{{ route('image.file', ['filename'=>$piece->img])}}"">
+                                    <img alt="imagen pieza" width="48" height="48" class="ml-1 rounded w-20 h-20 mr-4 shadow-lg" src="{{ route('image.file', ['filename'=>$piece->img])}}">
                                 </td>
                                 <td class="py-3">{{$piece->name}}</td>
                                 @if($piece->sold == 1)
@@ -95,15 +95,15 @@
                                     </div>
                                     <div class="flex justify-center space-x-1 mt-4">
                                         @if(!$piece->sold)
-                                            <x-nav-link  :href="route('my.pieces.sold', ['id'=> $piece->id])" class="font-bold" >
-                                                <a href="{{route('piece.detail',['id'=>$piece->id])}}" class="text-sm text-white font-bold bg-green-500 ml-4 p-4 rounded p-1.5">¡Vendida!</a>
+                                            <x-nav-link class="font-bold" >
+                                                <a href="{{route('my.pieces.sold',['id'=>$piece->id])}}" class="text-sm text-white font-bold bg-green-500 ml-4 p-4 rounded p-1.5">¡Vendida!</a>
                                             </x-nav-link>
                                         @endif
                                             
                                     </div>
 
                                     <div class="flex justify-center space-x-1 mt-4">
-                                       <x-nav-link  :href="route('destroy.admin', ['id'=> $piece->id])" class="font-bold" >
+                                       <x-nav-link class="font-bold" >
                                             <a href="{{route('piece.detail',['id'=>$piece->id])}}" class="text-sm text-white font-bold bg-purple-500 ml-4 p-4 rounded p-1.5">Ver en detalle</a>
                                         </x-nav-link>
                                     </div>

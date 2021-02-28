@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Carbon;
 
+/**
+ * CRUD de usuarios desde el administrador.
+ * Modificación de perfil de cada usuario.
+ */
 class UserController extends Controller
 {
     /**
@@ -63,7 +67,6 @@ class UserController extends Controller
                 $tipo= $request->get('buscaTipo');
 
                 //El usuario con los filtros:
-                //$users = User::nombre($nombre)->email($email)->nick($nick)->fecha($fecha)->tipo($tipo)->paginate($page);
                 $users = User::nombre($nombre)->email($email)->nick($nick)->fecha($fecha)->tipo($tipo)->paginate($page);
                 
                 //Hacemos control
@@ -418,7 +421,7 @@ class UserController extends Controller
         }else{
             //Si existe, controlamos que se este editando a sí mismo
             if(Auth::user()->id == $user->id){
-                //Si existe, mandamos a la página de edición de usuario con los datos del usuario.
+                //Si es así, mandamos a la página de edición de perfil con los datos del usuario.
                 $array=[
                     "user"=>$user
                 ];
@@ -473,7 +476,7 @@ class UserController extends Controller
                 if($image){
                     // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
                     $image_name =  time() . $image->getClientOriginalName();
-                    $image_delete= $user->img;
+                    $image_delete= $user->img;//Será para borrar la imagen y no saturar la carpeta
                     
                     // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
                     // donde se almacenó y guardamos la imagen recibida con el nombre generado

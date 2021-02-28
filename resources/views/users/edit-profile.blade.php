@@ -1,3 +1,6 @@
+<!--Vista de edición de perfil de usuario.
+    Muestra los datos del usuario para su edición.
+    Solo podrá acceder los usuarios para editarse a sí mismos.-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

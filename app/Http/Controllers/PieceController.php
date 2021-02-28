@@ -152,29 +152,27 @@ class PieceController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * Manda a la vista de 'Vendida'.
      *
      * @return \Illuminate\Http\Response
      */
     public function sold(Request $request)
     {
-        
-        //Auth::user()->id == $piece->id
         $piece = Piece::find($request->get('id'));
         //Control de que no pueda acceder ningun socio
 
             //Sino existe, mandamos a página de error.
             if (!$piece) {
                 $array=[
-                    'window'=>'Mis piezas -> Proceso de venta',
+                    'window'=>'Mis piezas -> ¡Vendida!',
                     'message' => 'Pieza no encontrada'
                 ];
 
             return view('/extras/error',$array);
 
-            }else if($piece && $piece->id != Auth::user()->id){
+            }else if($piece && $piece->user_id != Auth::user()->id){
                 $array=[
-                    'window'=>'Mis piezas -> Proceso de venta',
+                    'window'=>'Mis piezas -> ¡Vendida!',
                     'message' => 'No puede acceder a una pieza que no es suya.'
                 ];
 
@@ -189,6 +187,7 @@ class PieceController extends Controller
             }
     }
 
+    
     /**
      * Show the form for creating a new resource.
      *

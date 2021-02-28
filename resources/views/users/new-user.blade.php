@@ -1,3 +1,6 @@
+<!--Vista de nuevo de usuario.
+    Muestra un form para rellenar los datos del  nuevo usuario.
+    Solo podrá acceder los usuarios tipo admin.-->
 <x-app-layout >
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

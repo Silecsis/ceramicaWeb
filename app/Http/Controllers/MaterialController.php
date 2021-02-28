@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * Controlador del modelo Material.
+ * Contiene el CRUD de Material.
+ * Socios solo pueden ver.
+ */
 class MaterialController extends Controller
 {
     /**
@@ -53,7 +58,7 @@ class MaterialController extends Controller
             return view('/materials/materials',compact('materials'),$array);
         }else{
         //Si no tiene request o la que tiene es solo de paginacion:
-            //Listamos todos los users
+            //Listamos todos los materiales
             $materials = Material::paginate($page);
             //Hacemos control
             if(!$materials){
@@ -188,7 +193,7 @@ class MaterialController extends Controller
 
             return view('/extras/error',$array);
 
-            //Si el material intenta eliminarse a sí mismo, le dará error.
+            //Si todo funciona, editamos el material.
             }else{
                 $request->validate([
                     'name' => 'required|string|max:255',
@@ -202,7 +207,7 @@ class MaterialController extends Controller
                 $material->temperature = $request->temperature;
                 $material->toxic = $request->toxic;
 
-                //Si probamos a actualizar y funciona, lo redirigimos a la vista principal con un mensaje.
+                //Si probamos a actualizar y funciona, lo redirigimos a la vista de edicion de material con un mensaje.
                 if ($material->save()) { 
                     $array=[
                         'id'=>$material->id
@@ -254,12 +259,11 @@ class MaterialController extends Controller
 
             return view('/extras/error',$array);
 
-            //Si el material intenta eliminarse a sí mismo, le dará error.
             }else{
                 //Si existe, recogemos el nombre del material.    
                 $name=$material->name;
 
-                //Si probamos a eliminar y funciona, lo redirigimos a la vista principal con un mensaje.
+                //Si probamos a eliminar y funciona, lo redirigimos a la vista de listar materiales con un mensaje.
                 if ($material->delete()) { 
                     return redirect()->route('materials')->with(['status' => 'El material '.$name.' ha sido eliminado correctamente']);
 

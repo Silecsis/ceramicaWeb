@@ -1,3 +1,6 @@
+<!--Vista de nuevo material.
+    Muestra un form para rellenar los campos del nuvo material..
+-->
 <x-app-layout >
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

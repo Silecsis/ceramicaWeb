@@ -1,3 +1,8 @@
+<!--Vista de listado de ventas que tiene cada usuario.
+    Muestra una lista con todas las ventas de cada usuario.
+    Filtra las ventas.
+    Pagina las ventas.
+-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

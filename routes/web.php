@@ -83,8 +83,14 @@ Route::get('/sales', [SaleController::class,'listar']
 Route::get('/my.sales', [SaleController::class,'listarMisVentas']
 )->middleware(['auth'])->name('my.sales');
 
-Route::get('/new.sale', [SaleController::class,'create']
+Route::post('/my.pieces.new.sale', [SaleController::class,'create']
 )->middleware(['auth'])->name('new.sale');
+
+Route::get('/edit.sale', [SaleController::class,'show']
+)->middleware(['auth'])->name('edit.sale');
+
+Route::post('/update.sale', [SaleController::class,'update']
+)->middleware(['auth'])->name('update.sale');
 
 
 //-----------MODELO PIEZAS----------------

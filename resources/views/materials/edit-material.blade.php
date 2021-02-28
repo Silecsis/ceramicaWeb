@@ -1,3 +1,5 @@
+<!--Vista de edición de material.
+    Muestra los datos del material para su edición-->
 <x-app-layout >
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
