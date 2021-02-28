@@ -10,11 +10,10 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
 
-            <x-message-status-success class="mb-4" :status="session('status')" />
-
             <x-auth-card-sinLogo>
                 <!-- Información operación -->
                 <x-message-status-success class="mb-4" :status="session('status')" />
+                <x-message-status-error class="mb-4" :status="session('statusError')" />
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
@@ -35,6 +34,18 @@
                         <x-input id="description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" required/>
                     </div>
 
+                    <!--Materiales-->
+                    <div div class="mt-4 ">
+                        <x-label for="description" :value="__('Materiales: ')" class="font-bold"/>
+    
+                        <div class="mt-1 h-20 overflow-y-auto">
+                            @foreach($materials as $material)
+                            <x-input class="block mt-1 h-2 px-2 mr-2 inline" type="checkbox" name="materials[]" id="materials" :value="$material->id" />{{$material->name}}<br>
+                            @endforeach
+                        </div>
+                        
+                    </div>
+                    
 
                     <!-- Imagen Nueva-->
                     <div class="mt-4">

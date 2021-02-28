@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Material;
 use App\Models\Piece;
 use App\Models\User;
+use App\Models\material_piece;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -315,6 +316,23 @@ class PieceController extends Controller
         }
     }
     
+
+    /**
+     * CManda a la vista.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newPiece()
+    {
+        $materials=Material::all();
+        $array=[
+            'materials'=>$materials
+        ];
+
+        return view('/pieces/new-piece',$array);
+      
+    }
+
     /**
      * Crea una nueva pieza.
      *
@@ -328,7 +346,8 @@ class PieceController extends Controller
          $request->validate([
            'name' => 'required|string|max:255|min:6|unique:users,email,',
            'description' => 'required|string|',
-           'image'=>'required'
+           'image'=>'required',
+           'materials[]'=>'min:1',
         ]); 
 
           //Subir la imagen
@@ -353,12 +372,22 @@ class PieceController extends Controller
           $piece->user_id = Auth::user()->id;
           $piece->sold = 0;
 
+          
+          $materials=$request->materials;
+
           //Si probamos a guardar y funciona, lo redirigimos a la vista de nueva pieza con un mensaje.
-          if ($piece->save()) { 
+          if ($piece->save() && $materials!=null) { 
+                //Le asignamos los materiales a la pieza.
+                foreach($materials as $idMaterial){
+                      $piece->materials()->attach($idMaterial);
+                }
+
 
               return redirect()->route('new.piece')->with(['status' => 'La pieza se ha creado correctamente']);
 
-          } else {
+          } else if($materials==null){
+            return redirect()->route('new.piece')->with(['statusError' => 'Debes marcar un material al menos.']);
+          }else {
           //Sino funciona el guardar, se le manda a la vista de error con el mensaje.
               $array=[
                   'window'=>'Mis piezas -> Nueva pieza -> Creación',
@@ -424,7 +453,8 @@ class PieceController extends Controller
     }
 
      /**
-     * Display the specified resource.
+     * Muestra la pieza con sumo de detalles.
+     * También lista los materiales empleados en la pieza.
      *
      * @param  \App\Models\Piece  $piece
      * @return \Illuminate\Http\Response
@@ -444,8 +474,12 @@ class PieceController extends Controller
             return view('/extras/error',$array);
         }else{
             //Si existe, mandamos a la página de edición de usuario con los datos del usuario.
+            
+            $user=User::find($piece->user_id);
             $array=[
-                "piece"=>$piece
+                "piece"=>$piece,
+                "materials"=>$piece->materials,
+                "user"=>$user
             ];
             return view('/pieces/detail',$array);
         }

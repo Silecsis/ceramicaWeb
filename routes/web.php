@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PieceController;
+use App\Http\Models\Material;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -112,9 +113,8 @@ Route::get('/edit.piece', [PieceController::class,'show']
 Route::post('/update.piece', [PieceController::class,'update']
 )->middleware(['auth'])->name('update.piece');
 
-Route::get('/new.piece', function () {
-    return view('/pieces/new-piece');
-})->middleware(['auth'])->name('new.piece');
+Route::get('/new.piece', [PieceController::class,'newPiece']
+)->middleware(['auth'])->name('new.piece');
 
 Route::post('/create.piece', [PieceController::class,'create']
 )->middleware(['auth'])->name('create.piece');
