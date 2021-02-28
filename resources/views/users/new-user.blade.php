@@ -11,8 +11,6 @@
     <div >
         <x-guest-layout>
             <x-auth-card-sinLogo>
-                <!-- Información operación -->
-                <x-message-status-success class="mb-4" :status="session('status')" />
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 

@@ -103,9 +103,24 @@ Route::get('/my.pieces', [PieceController::class,'listarMisPiezas']
 Route::get('/my.pieces.sold', [PieceController::class,'sold']
 )->name('my.pieces.sold');
 
+Route::get('/destroy.piece', [PieceController::class,'destroy']
+)->middleware(['auth'])->name('destroy.piece');
+
+Route::get('/edit.piece', [PieceController::class,'show']
+)->middleware(['auth'])->name('edit.piece');
+
+Route::post('/update.piece', [PieceController::class,'update']
+)->middleware(['auth'])->name('update.piece');
+
+Route::get('/new.piece', function () {
+    return view('/pieces/new-piece');
+})->middleware(['auth'])->name('new.piece');
+
+Route::post('/create.piece', [PieceController::class,'create']
+)->middleware(['auth'])->name('create.piece');
+
 Route::get('/piece.detail', [PieceController::class,'detail']
 )->middleware(['auth'])->name('piece.detail');
-
 
 Route::get('/images/file/{filename}', [PieceController::class,'getImage']
 )->name('image.file');

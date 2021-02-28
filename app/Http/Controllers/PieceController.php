@@ -10,11 +10,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
+/**
+ * CRUD del modelo piezas.
+ * Los admin tendrán acceso al listado de todas las piezas del sistema.
+ * Los usuarios solo verán una lista de las piezas que poseen.
+ * Los usuarios podran editar, eliminar sus piezas y crear una nueva pieza.
+ */
 class PieceController extends Controller
 {
     /**
-     * Lista todas las piezas del sistema
+     * Lista todas las piezas del sistema.
+     * Solo podrá acceder los usuarios de tipo admin.
+     * Estos solo podrán ver.
      *
      * @return \Illuminate\Http\Response
      */
@@ -28,7 +37,7 @@ class PieceController extends Controller
             $arr['pagination']= $page; 
         }
 
-        //Necesitaremos estas variables apra mandar a la vista los usuarios y listarlos.
+        //Necesitaremos esta variable para mandar a la vista los usuarios y listarlos.
         $usersAll=User::all();
         
         
@@ -62,7 +71,7 @@ class PieceController extends Controller
             return view('/pieces/pieces',compact('pieces'),$array);
         }else{
         //Si no tiene request o la que tiene es solo de paginacion:
-            //Listamos todas las ventas
+            //Listamos todas las piezas
             $pieces = Piece::paginate($page);
 
             //Hacemos control
@@ -101,7 +110,7 @@ class PieceController extends Controller
             $arr['pagination']= $page; 
         }
 
-        //Si no hay request o la request tiene más elementos a parte de la paginacióm, filtra.
+        //Si no hay request o la request tiene más elementos a parte de la paginación, filtra.
         if(!$request|| isset($arr) && $request != $arr ){
             //Tipos de filtrado:
             $nombre= $request->get('buscaNombre');
@@ -109,7 +118,7 @@ class PieceController extends Controller
             $vendido= $request->get('buscaVendido');
             $fecha= $request->get('buscaFechaLogin');
             
-            //La pieza con los filtros:
+            //La pieza con los filtros. Siempre lista los del usuario logueado
             $pieces = Piece::userId(Auth::user()->id)->nombre($nombre)->vendido($vendido)->fecha($fecha)->paginate($page);
 
             //Hacemos control
@@ -129,7 +138,7 @@ class PieceController extends Controller
             return view('/pieces/my-pieces',compact('pieces'),$array);
         }else{
         //Si no tiene request o la que tiene es solo de paginacion:
-            //Listamos todas las piezas
+            //Listamos todas las piezas del usuario
             $pieces = Piece::userId(Auth::user()->id)->paginate($page);
 
             //Hacemos control
@@ -153,63 +162,268 @@ class PieceController extends Controller
 
     /**
      * Manda a la vista de 'Vendida'.
+     * Solo podrá hacerlo si el id del usuario logueado
+     * concuerda con el user_id de la pieza.
      *
      * @return \Illuminate\Http\Response
      */
     public function sold(Request $request)
     {
         $piece = Piece::find($request->get('id'));
-        //Control de que no pueda acceder ningun socio
 
-            //Sino existe, mandamos a página de error.
-            if (!$piece) {
-                $array=[
-                    'window'=>'Mis piezas -> ¡Vendida!',
-                    'message' => 'Pieza no encontrada'
-                ];
-
-            return view('/extras/error',$array);
-
-            }else if($piece && $piece->user_id != Auth::user()->id){
-                $array=[
-                    'window'=>'Mis piezas -> ¡Vendida!',
-                    'message' => 'No puede acceder a una pieza que no es suya.'
-                ];
+        //Sino existe, mandamos a página de error.
+        if (!$piece) {
+            $array=[
+                'window'=>'Mis piezas -> ¡Vendida!',
+                'message' => 'Pieza no encontrada'
+            ];
 
             return view('/extras/error',$array);
 
-            }else{
-                //Si existe, mandamos a la página de edición de usuario con los datos del usuario.
-                $array=[
-                    "piece"=>$piece
-                ];
-                return view('/pieces/sold',$array);
-            }
+        }else if($piece && $piece->user_id != Auth::user()->id){
+            //Si existe pero no la pieza no es del usuario, error.
+            $array=[
+                'window'=>'Mis piezas -> ¡Vendida!',
+                'message' => 'No puede acceder a una pieza que no es suya.'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+        //Si todo va bien, mandamos a la pagina de venta.
+            $array=[
+                "piece"=>$piece
+            ];
+            return view('/pieces/sold',$array);
+        }
     }
 
-    
     /**
-     * Show the form for creating a new resource.
+     * 
+     * Muestra la ventada de edicion de la pieza y le pasa los datos de esta.
+     * Solo podrá hacerlo si el id del usuario logueado
+     * concuerda con el user_id de la pieza.
      *
+     * @param  \App\Models\User  $User
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show(Request $request)
     {
-        //
+        $piece = Piece::find($request->get('id'));
+        //Control de que no pueda acceder un usuario que no tenga dicha pieza y de que la pieza exista
+        if(Auth::user()->id == $piece->user_id && $piece){
+    
+              //Si existe, mandamos a la página de edición de pieza con los datos de la pieza.
+              $array=[
+                "piece"=>$piece
+            ];
+            return view('/pieces/edit-piece',$array);
+            
+        }else if(!$piece){
+            $array=[
+                'window'=>'Mis piezas -> Editar pieza',
+                'message' => 'No existe la pieza que desea editar.'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+            $array=[
+                'window'=>'Mis piezas -> Editar pieza',
+                'message' => 'No puede editar una pieza que no es suya.'
+            ];
+
+            return view('/extras/error',$array);
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Edita la pieza.
+     * Solo podrá hacerlo si el id del usuario logueado
+     * concuerda con el user_id de la pieza.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Piece  $piece
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function update(Request $request, Piece $piece)
     {
-        //
+        $piece = Piece::find($request->get('id'));
+        //Control de que no pueda acceder un usuario que no tenga dicha pieza y de que la pieza exista
+        if(Auth::user()->id == $piece->user_id && $piece){
+    
+              //Si existe la pieza, primero validamos.   
+              $request->validate([
+                'name' => 'required|string|max:255|min:6|unique:users,email,' . $piece->id,
+                'description' => 'required|string|'
+             ]); 
+
+            //Subir la imagen
+            $image= $request->file('image'); 
+            // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
+            // Para ello utilizaremos un objeto storage de Laravel
+            if($image){
+                // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+                $image_name =  time() . $image->getClientOriginalName();
+                $image_delete= $piece->img;
+                
+                // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+                // donde se almacenó y guardamos la imagen recibida con el nombre generado
+                Storage::disk('pieces')->put($image_name, File::get($image));
+
+                //Eliminamos la que tenia antes
+                
+                Storage::disk('pieces')->delete($image_delete);
+
+                $piece->img = $image_name;   
+            } 
+            
+            $piece->name = $request->name;
+            $piece->description = $request->description;
+
+            //Si probamos a guardar y funciona, lo redirigimos a la vista de edicion con un mensaje.
+            if ($piece->save()) { 
+                $array=[
+                    'id'=>$piece->id
+                ];
+                return redirect()->route('edit.piece', $array)->with(['status' => 'La pieza de nombre '.$piece->name.' ha sido actualizada correctamente']);
+
+            } else {
+            //Sino funciona el guardar, se le manda a la vista de error con el mensaje.
+                $array=[
+                    'window'=>'Mis piezas -> Edición de pieza',
+                    'message' => 'La pieza no puede ser editada'
+                ];
+
+                return view('/extras/error',$array);
+            }
+        
+        //Si la pieza no existe    
+        }else if(!$piece){
+            $array=[
+                'window'=>'Mis piezas -> Edición de pieza',
+                'message' => 'No existe la pieza que desea editar.'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+        //Si la pieza existe y la pieza no es del usuario
+            $array=[
+                'window'=>'Mis piezas -> Edición de pieza',
+                'message' => 'No puede editar una pieza que no es suya.'
+            ];
+
+            return view('/extras/error',$array);
+        }
+    }
+    
+    /**
+     * Crea una nueva pieza.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        $piece = new Piece();
+    
+         //Primero validamos.   
+         $request->validate([
+           'name' => 'required|string|max:255|min:6|unique:users,email,',
+           'description' => 'required|string|',
+           'image'=>'required'
+        ]); 
+
+          //Subir la imagen
+          $image= $request->file('image'); 
+          // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
+          // Para ello utilizaremos un objeto storage de Laravel
+          if($image){
+              // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+              $image_name =  time() . $image->getClientOriginalName();
+              
+              // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+              // donde se almacenó y guardamos la imagen recibida con el nombre generado
+              Storage::disk('pieces')->put($image_name, File::get($image));
+
+              $piece->img = $image_name;   
+          } 
+          
+          $piece->name = $request->name;
+          $piece->description = $request->description;
+
+          //Por defecto, la pieza no estará vendida y tendrá el id del usuario logueado.
+          $piece->user_id = Auth::user()->id;
+          $piece->sold = 0;
+
+          //Si probamos a guardar y funciona, lo redirigimos a la vista de nueva pieza con un mensaje.
+          if ($piece->save()) { 
+
+              return redirect()->route('new.piece')->with(['status' => 'La pieza se ha creado correctamente']);
+
+          } else {
+          //Sino funciona el guardar, se le manda a la vista de error con el mensaje.
+              $array=[
+                  'window'=>'Mis piezas -> Nueva pieza -> Creación',
+                  'message' => 'La pieza no se ha podido crear'
+              ];
+
+              return view('/extras/error',$array);
+          }
+      
     }
 
     /**
+     * Elimina la pieza.
+     * Solo podrá hacerlo si el id del usuario logueado
+     * concuerda con el user_id de la pieza.
+     *
+     * @param  \App\Models\Piece  $piece
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        $piece = Piece::find($request->get('id'));
+        //Control de que no pueda acceder un usuario que no tenga dicha pieza y de que la pieza exista
+        if(Auth::user()->id == $piece->user_id && $piece){
+    
+              //Si existe, recogemos el ombre de la pieza.    
+              $name=$piece->name;
+              $image_delete= $piece->img; //guardamos la imagen a eliminar
+
+              //Si probamos a eliminar y funciona, lo redirigimos al listado de las piezas.
+              if ($piece->delete()) { 
+                  //Eliminamos la imagen que tenia
+                    Storage::disk('pieces')->delete($image_delete);
+                
+                  return redirect()->route('my.pieces')->with(['status' => 'La pieza '.$name.' ha sido eliminada correctamente']); 
+              } else {
+              //Sino funciona el delete, se le manda a la vista de error con el mensaje.
+                  $array=[
+                      'window'=>'Mis piezas -> Eliminación de pieza',
+                      'message' => 'La pieza '.$piece->name.' no puede ser eliminada'
+                  ];
+
+                  return view('/extras/error',$array);
+              }
+            
+        }else if(!$piece){
+        //Si la pieza no existe
+            $array=[
+                'window'=>'Mis piezas -> Eliminación pieza',
+                'message' => 'No existe la pieza que desea eiminar.'
+            ];
+
+            return view('/extras/error',$array);
+        }else{
+        //Si existe y es un usuario que no tiene esa pieza.
+            $array=[
+                'window'=>'Mis piezas -> Eliminación pieza',
+                'message' => 'No puede eliminar una pieza que no es suya.'
+            ];
+
+            return view('/extras/error',$array);
+        }
+    }
+
+     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Piece  $piece
@@ -237,40 +451,7 @@ class PieceController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Piece  $piece
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Piece $piece)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Piece  $piece
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Piece $piece)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Piece  $piece
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Piece $piece)
-    {
-        //
-    }
-
+    //----------------------------PARA IAMGENES-------------------
      /**
     * Devuelve la imagen avatar del usuario
     *

@@ -1,3 +1,8 @@
+<!--Vista de listado de piezas que tiene cada usuario.
+    Muestra una lista con todas las piezas de cada usuario.
+    Filtra las piezas.
+    Pagina las piezas.
+-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">

@@ -1,14 +1,9 @@
-<!--Vista de venta de la pieza. Se muestra la imagen de la pieza y
- se introduce los datos de venta 'precio' y 'nombre'.
- Luego, lo mandará al controlador de sale para que gestione la creación de
- la nueva venta.
-
- Es como la vista de nueva venta.
--->
+<!--Vista de edición de pieza.
+    Muestra los datos de la pieza para su edición-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Mis piezas-> ¡Vendida!') }}
+            Mis piezas-> Editar pieza de nombre "<b class="text-blue-600">{{$piece->name}}</b>"
         </h2>
     </x-slot>
     <div class="py-8">
@@ -29,26 +24,27 @@
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                <form method="POST" action="{{ route('new.sale',['piece_id'=>$piece->id]) }}">
+                <form method="POST" action="{{ route('update.piece',['id'=>$piece->id]) }}" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="flex justify-center space-x-1">
-                        <h4>¡Enhorabuena por haber vendido esta pieza! Ahora solo falta registrar 
-                         su precio de venta y el nombre de la venta en la base de datos y todo estará listo.</h4>
+                    <!-- Name -->
+                    <div >
+                        <x-label for="name" :value="__('Nombre')" class="font-bold"/>
+                        
+                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$piece->name" required/>
                     </div>
 
-                    <!-- Precio -->
-                    <div class="mt-4">
-                        <x-label for="price" :value="__('Precio de venta: ')" />
-
-                        <x-input id="price" class="block mt-1 w-full" type="number" name="price" :value="old('precio')" required />
+                    <!-- Description -->
+                    <div div class="mt-4">
+                        <x-label for="description" :value="__('Descripción')" class="font-bold"/>
+                        
+                        <x-input id="description" class="block mt-1 w-full" type="text" name="description" :value="$piece->description" required/>
                     </div>
 
-                    <!-- Nombre de venta -->
+                    <!-- Imagen Nueva-->
                     <div class="mt-4">
-                        <x-label for="name" :value="__('Nombre de venta: ')" />
-
-                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required />
+                        <x-label for="image" :value="__('Cargar imagen nueva: ')" class="font-bold"/>
+                        <input id="image" class="block mt-1 w-full" type="file" name="image"/>
                     </div>
 
                     <div class="flex items-center justify-end mt-4">
@@ -59,7 +55,7 @@
                         </a>
 
                         <x-button class="ml-4 flex float-right text-white font-bold bg-indigo-500 p-4 rounded p-1.5">
-                            {{ __('Confirmar venta') }}
+                            {{ __('Editar pieza') }}
                         </x-button>
                     </div>
                 </form>

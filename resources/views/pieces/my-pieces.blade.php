@@ -1,3 +1,8 @@
+<!--Vista de listado de piezas que tiene el usuario identificado.
+    Muestra una lista con todas las piezas del usuario.
+    Filtra las piezas.
+    Pagina las piezas.
+-->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -30,6 +35,9 @@
                     </form>
                </div>  
             </nav>
+
+            <a href="{{ route('new.piece') }}"  class="text-lg text-gray-600 font-bold bg-yellow-300 border-4 border-gray-400 p-4 rounded p-1.5">Nueva Pieza</a>
+
             <!--SELECCION DE PAGINACION-->  
             <div class="hidden sm:flex mt-8 mb-1  ">
                  <x-dropdown width="48">
@@ -81,13 +89,13 @@
                                 <td class="py-3">{{substr($piece->created_at,0,10)}}</td>
                                 <td class="py-3">
                                     <div class="flex justify-center space-x-1">
-                                            <x-nav-link  :href="route('edit.admin', ['id'=> $piece->id])" class="font-bold" >
+                                            <x-nav-link  :href="route('edit.piece', ['id'=> $piece->id])" class="font-bold" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 text-indigo-500">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                 </svg>
                                             </x-nav-link>
 
-                                            <x-nav-link  :href="route('destroy.admin', ['id'=> $piece->id])" class="font-bold" >
+                                            <x-nav-link  :href="route('destroy.piece', ['id'=> $piece->id])" class="font-bold" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 text-red-500">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
