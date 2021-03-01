@@ -39,6 +39,11 @@
                     <x-nav-link :href="route('my.sales',['pagination'=>4])" :active="request()->routeIs('my.sales')" class="font-bold">
                         {{ __('Mis ventas') }}
                     </x-nav-link>
+
+                    <!--Valor moneda-->
+                    <x-nav-link :href="route('api')" :active="request()->routeIs('api')" class="font-bold">
+                        {{ __('Valor del Euro') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -126,6 +131,11 @@
                 <x-responsive-nav-link :href="route('my.sales',['pagination'=>4])" :active="request()->routeIs('my.sales')" class="font-bold">
                     {{ __('Mis Ventas') }}
                 </x-responsive-nav-link>
+
+                <!--Valor moneda-->
+                <x-nav-link :href="route('api')" :active="request()->routeIs('api')" class="font-bold">
+                    {{ __('Valor del Euro') }}
+                </x-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

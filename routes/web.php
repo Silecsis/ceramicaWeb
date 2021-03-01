@@ -4,7 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PieceController;
-use App\Http\Models\Material;
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -130,5 +130,8 @@ Route::get('/error', function () {
     return view('/extras/error');
 })->middleware(['auth'])->name('error');
 
+//-----------------API------------------
+Route::get('/valor.euro', [ApiController::class,'lista']
+)->middleware(['auth'])->name('api');
 
 require __DIR__.'/auth.php';
