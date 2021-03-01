@@ -56,8 +56,11 @@
                         <div class="flex flex-wrap justify-center mt-2">
                               <div class="w-6/12 sm:w-4/12 px-4">
                              <!--Para imprimir imagen en el proyecto--> 
-                                 <img src="{{ route('user.avatar', ['filename'=>Auth::user()->img])}}" alt="Imagen de perfil" class="shadow rounded max-w-full h-auto align-middle border-none" />
-                              </div>
+                                @if($user->img == null)
+                                <img src="{{ route('user.avatar', ['filename'=>'default-img.png'])}}" alt="Imagen de perfil" class="shadow rounded max-w-full h-auto align-middle border-none" />
+                                @else
+                                <img src="{{ route('user.avatar', ['filename'=>$user->img])}}" alt="Imagen de perfil" class="shadow rounded max-w-full h-auto align-middle border-none" />
+                                @endif </div>
                            </div>
                     </div>
 
